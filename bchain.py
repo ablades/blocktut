@@ -1,4 +1,4 @@
-class Blockchain:
+class Blockchain(object):
 
     def __init__(self):
         # stores block chain
@@ -6,21 +6,47 @@ class Blockchain:
         # stores transactions
         self.current_transactions = list()
 
-    # Creates and adds new blocks to chain
-    def new_block(self):
-        pass
+        # Genesis Block
+        self.new_block(previous_hash=1, proof=100)
 
-    # Adds new transaction to existing transaction
+    # creates and adds new blocks to chain
+    def new_block(self, proof, previous_hash=None):
+        block = {
+            'index': len(self.chain) + 1,
+            'timestamp': time(),
+            'proof': proof,
+            'previous_hash': previous_hash or self.hash(self.chain[-1])
+        }
+
+        # reset transactions
+        self.current_transactions = list()
+        # log current block
+        self.chain.append(block)
+
+        return block
+
+    # adds new transaction to existing transaction
     def new_transaction(self):
-        pass
+        transaction = {
+            'sender': sender,
+            'recipient': recipient,
+            'amount': amount,
+        }
+
+        self.current_transactions.append(transaction)
+
+        return self.last_block['index'] + 1
 
     @staticmethod
     def hash(block):
-        pass
+        block_string = json.dumps(block, sort_keys=True).encode()
+
+        return hashlib.sha256(block_string).hexdigest()
 
     # calls last block in chain
+    @property
     def last_block(self):
-        pass
+        return self.chain[:-1]
 
     # register and add node to network
     def register_node(self):
