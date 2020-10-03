@@ -1,3 +1,7 @@
+import hashlib
+import time
+
+
 class Blockchain(object):
 
     def __init__(self):
@@ -13,7 +17,7 @@ class Blockchain(object):
     def new_block(self, proof, previous_hash=None):
         block = {
             'index': len(self.chain) + 1,
-            'timestamp': time(),
+            'timestamp': time.time(),
             'proof': proof,
             'previous_hash': previous_hash or self.hash(self.chain[-1])
         }
